@@ -7,9 +7,29 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Avatar from '@material-ui/core/Avatar'
+import youtube from './API/youtube'
 
 function Header () {
     const [inputSearch, setInputSearch] = useState('');
+
+    const handleChange = (event) => {
+        setInputSearch(event.target.value)
+    }
+
+    // e => setInputSearch(e.target.value)
+
+    const handleSubmit = async (inputSearch) => {
+        const response = await youtube.get('search', {
+            params: {
+                part: 'snippet',
+                maxResults: 20,
+                key: 'AIzaSyCZK1pOt1UekRJZ3tZnOLihmgXiDYfDrTA'
+            }
+        })
+    
+        console.log(response)
+    }
+
     return (
         <div className = "header">
             <div className= 'header__left'>
@@ -24,11 +44,11 @@ function Header () {
                 
             </div>
 
-            <div className='header__input'>
-                <input onChange={e => setInputSearch(e.target.value)} value={inputSearch} text='text' placeholder="Search" />
-                <Link to={`/search/${inputSearch}`}>
-                    <SearchIcon className = "header__inputButton"/>
-                </Link>
+            <div className='header__input'  >
+                    <input onChange={handleChange}  value={inputSearch} text='text' placeholder="Search" />
+                    <Link to={`/search/${inputSearch}`}>
+                        <SearchIcon className = "header__inputButton" onClick={handleSubmit}/>
+                    </Link>
             </div>
 
             <div className="header__icons">
